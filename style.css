@@ -1,0 +1,87 @@
+/* General page styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  /* padding: 0;
+  margin: 0; */
+  /* text-align: center; */
+}
+
+.heading {
+  color: blue;
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* Styles for calculator */
+.outline {
+  margin: auto;
+  border: 2px solid rgb(54, 51, 51);
+  height: 600px;
+  width: 360px;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 5px 5px lightgray;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.display {
+  border: 2px solid black;
+  height: 100px;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+.live-display {
+  border: 1px solid red;
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+}
+
+/* overall dimension for big container key boxes */
+.numpad {
+  height: 450px;
+  display: flex;
+  flex-wrap: wrap;
+  /* border: 1px solid red; */
+  justify-content: space-around;
+  align-items: center;
+  /* justify-content: space-around; */
+  /* gap: 5px; */
+}
+
+/* Setting margin auto for all divs */
+/* .display, .numpad {
+  width: 90%;
+  margin: auto;
+} */
+
+/* Individual keys */
+/* .keypad .key {
+  width: 45%;
+  border: 1px solid green;
+  height: 75%;
+  border-radius: 5px;
+}
+
+.numpad .key {
+  width: 23%;
+  border: 1px solid green;
+  height: 20%;
+  border-radius: 5px;
+} */
+
+
+
+
+
+
+
+
+
+
+

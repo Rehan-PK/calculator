@@ -5,20 +5,20 @@
   box-sizing: border-box;
   /* padding: 0;
   margin: 0; */
-  /* text-align: center; */
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .heading {
   color: blue;
   margin: 20px 0;
-  text-align: center;
 }
 
 /* Styles for calculator */
 .outline {
   margin: auto;
-  border: 2px solid rgb(54, 51, 51);
-  height: 600px;
+  border: 2px solid goldenrod;
+  height: 500px;
   width: 360px;
   border-radius: 10px;
   padding: 20px;
@@ -26,54 +26,84 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: gray;
 }
 
 .display {
-  border: 2px solid black;
-  height: 100px;
-  padding: 4px;
+  border: 2px solid goldenrod;
+  height: 90px;
+  padding: 8px;
   border-radius: 5px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .live-display {
-  border: 1px solid red;
+  /* border: 1px solid red; */
   border-radius: 5px;
-  height: 100%;
-  width: 100%;
+  /* height: 100%; */
+  /* width: 100%; */
+}
+
+.live-display.small {
+  height: 25%;
+  margin-bottom: auto;
+}
+
+.live-display.big {
+  height: 75%;
+  font-size: 42px;
+  padding-top: 8px;
 }
 
 /* overall dimension for big container key boxes */
 .numpad {
-  height: 450px;
+  height: 350px;
   display: flex;
   flex-wrap: wrap;
   /* border: 1px solid red; */
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   /* justify-content: space-around; */
   /* gap: 5px; */
 }
 
-/* Setting margin auto for all divs */
-/* .display, .numpad {
-  width: 90%;
-  margin: auto;
-} */
-
-/* Individual keys */
-/* .keypad .key {
-  width: 45%;
-  border: 1px solid green;
-  height: 75%;
+.numpad .key {
+  width: 70px;
+  border: 1px solid goldenrod;
+  height: 55px;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  user-select: none;
+  font-size: 24px;
+  color: darkgoldenrod;
 }
 
-.numpad .key {
-  width: 23%;
-  border: 1px solid green;
-  height: 20%;
-  border-radius: 5px;
-} */
+.numpad .key:hover {
+  background-color: rgb(250, 250, 196);
+  cursor: pointer;
+  /* color: white; */
+}
+
+.numpad .key:active {
+  background-color: rgb(246, 238, 227);
+}
+
+.numpad #delete, .numpad #clear {
+  width: 150px;
+  height: 70px;
+}
+
+.numpad #delete {
+  margin-left: auto;
+}
+
 
 
 

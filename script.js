@@ -107,29 +107,75 @@ function operate(a, op, b) {
 // }
 
 // ---------------- CORRECT ---------------------
+// Select all buttons of key class
 let buttons = document.querySelectorAll(".key");
+// add click eventlistener for all keys, check for input of numbers/operators
 for (let i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener("click", () => checkInput(i));
 }
+// function checkInput(key) {
+//   let keyValue = buttons[key].innerHTML.trim();  
+//   if (Number.isInteger(Number(keyValue))) {
+//     a.push(keyValue);
+//     display = a.join("");
+//     console.log(display);
+//     return a;
+//   } else if (keyValue == '+' || keyValue == '-' || keyValue == '*' || keyValue == '/') {
+//     op = keyValue;
+//     console.log(op);
+//     return op;
+//   } else {
+//     return console.log('neither a number nor an arithmetic operator');
+//   }
+// }
+
 function checkInput(key) {
-  let keyValue = buttons[key].innerHTML.trim();  
-  //  in process of checking if arithmetic operator pressed and changing from variable a to b, 
-  if (!op && Number.isInteger(Number(keyValue))) {
-    // only above line changed till now
+  let keyValue = buttons[key].innerHTML.trim();
+  let checkForInt = Number.isInteger(Number(keyValue));
+  if (checkForInt && !op) {
     a.push(keyValue);
-    display = a.join("");
-    console.log(display);
-    return a;
-  } else if (keyValue == '+' || keyValue == '-' || keyValue == '*' || keyValue == '/') {
+    console.log(a);
+  } else if (checkForInt && op) {
+    b.push(keyValue);
+    console.log(b);
+  } else if (!checkForInt && !op) {
     op = keyValue;
     console.log(op);
-    return op;
+  } else if (keyValue == "=" && a && b && op) {
+    let result = operate(Number(a.join("")), op, Number(b.join("")));
+    a.splice(0, a.length);
+    b.splice(0, b.length);
+    op = null;
+    console.log(result);
+    return result;
+  } else if (keyValue == 'CLEAR') {
+    if (a.length > 0) {
+      a.splice(0, a.length);
+    } else if (b.length > 0) {
+      b.splice(0, b.length);
+    } else if (op) {
+      op = null;
+    }
+  } else if (keyValue == 'DELETE') {
+    if (op) {
+      if (b.length > 0) {
+        b.pop();
+      } else {
+        op = null;
+      }
+    } else if (!op && a.length > 0) {
+      a.pop();
+    }
   } else {
-    return console.log('neither a number nor a symbol');
+    alert('neither a number nor an arithmetic operator');
   }
 }
 
-function operator() {
 
-}
+
+
+
+
+
+
 

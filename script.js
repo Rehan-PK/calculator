@@ -41,7 +41,7 @@ function divide(a, b) {
 let a = [], 
 b = [], 
 op, 
-display;
+result;
 
 // 3. creating function operate
 function operate(a, op, b) {
@@ -54,7 +54,7 @@ function operate(a, op, b) {
   } else if (op == '/') {
     return divide(a, b);
   } else {
-    alert("Not a valid operation");
+    // alert("Not a valid operation");
   }
 }
 
@@ -129,53 +129,158 @@ for (let i = 0; i < buttons.length; i++) {
 //   }
 // }
 
+// function checkInput(key) {
+//   let keyValue = buttons[key].innerHTML.trim();
+//   let checkForInt = Number.isInteger(Number(keyValue));
+//   if (checkForInt && !op) {
+//     a.push(keyValue);
+//     console.log(a);
+//   } else if (checkForInt && op) {
+//     b.push(keyValue);
+//     console.log(b);
+//   } else if (!checkForInt && !op) {
+//     op = keyValue;
+//     console.log(op);
+//   } else if (keyValue == "=" && a && b && op) {
+//     let result = operate(Number(a.join("")), op, Number(b.join("")));
+//     a.splice(0, a.length);
+//     b.splice(0, b.length);
+//     op = null;
+//     console.log(result);
+//     return result;
+//   } else if (keyValue == 'CLEAR') {
+//     if (b.length > 0) {
+//       b.splice(0, a.length);
+//       a.splice(0, a.length);
+//       op = null;
+//     } else if (op) {
+//       op = null;
+//       a.splice(0, b.length);
+//     } else if (a.length > 0) {
+//       a.splice(0, a.length);
+//     }
+//   } else if (keyValue == 'DELETE') {
+//     if (op) {
+//       if (b.length > 0) {
+//         b.pop();
+//       } else {
+//         op = null;
+//       }
+//     } else if (!op && a.length > 0) {
+//       a.pop();
+//     }
+//   } else {
+//     alert('neither a number nor an arithmetic operator');
+//   }
+// }
+
+// pressing button clear makes op = clear, check it
+
+// converting above to switch statement
 function checkInput(key) {
   let keyValue = buttons[key].innerHTML.trim();
-  let checkForInt = Number.isInteger(Number(keyValue));
-  if (checkForInt && !op) {
-    a.push(keyValue);
-    console.log(a);
-  } else if (checkForInt && op) {
-    b.push(keyValue);
-    console.log(b);
-  } else if (!checkForInt && !op) {
-    op = keyValue;
-    console.log(op);
-  } else if (keyValue == "=" && a && b && op) {
-    let result = operate(Number(a.join("")), op, Number(b.join("")));
-    a.splice(0, a.length);
-    b.splice(0, b.length);
-    op = null;
-    console.log(result);
-    return result;
-  } else if (keyValue == 'CLEAR') {
-    if (a.length > 0) {
+  switch(keyValue) {
+    case "1":
+    case "2":
+    case "3":
+    case "4":
+    case "5":
+    case "6":
+    case "7":
+    case "8":
+    case "9":
+    case "0":
+      pushKey(keyValue);
+      updateBigDisplay();
+      // console.log(keyValue);
+      break;
+    case "CLEAR":
+      clearIt();
+      updateBigDisplay();
+      break;
+    case "DELETE":
+      deleteIt(keyValue);
+      updateBigDisplay();
+      break;
+    case "+":
+    case "-":
+    case "*":
+    case "/":
+      op = keyValue;
+      updateBigDisplay();
+      break;
+    case "=":
+      result = operate(Number(a.join("")), op, Number(b.join("")))
+      console.log(result);
+      updateBigDisplay();
       a.splice(0, a.length);
-    } else if (b.length > 0) {
       b.splice(0, b.length);
-    } else if (op) {
       op = null;
-    }
-  } else if (keyValue == 'DELETE') {
-    if (op) {
-      if (b.length > 0) {
-        b.pop();
-      } else {
-        op = null;
-      }
-    } else if (!op && a.length > 0) {
-      a.pop();
-    }
-  } else {
-    alert('neither a number nor an arithmetic operator');
+      result = null;
   }
 }
 
+function pushKey(keyValue) {
+  let checkForInt = Number.isInteger(Number(keyValue));
+  if (op && checkForInt) {
+    b.push(keyValue);
+    console.log(b);
+  } else if (!op && checkForInt) {
+    a.push(keyValue);
+    console.log(a);
+  }
+}
 
+function clearIt() {
+  if (b.length > 0) {
+    b.splice(0, a.length);
+    a.splice(0, a.length);
+    op = null;
+  } else if (op) {
+    op = null;
+    a.splice(0, b.length);
+  } else if (a.length > 0) {
+    a.splice(0, a.length);
+  }
+}
 
+function deleteIt() {
+  if (op) {
+    if (b.length > 0) {
+      b.pop();
+    } else {
+      op = null;
+    }
+  } else if (!op && a.length > 0) {
+    a.pop();
+  }
+}
 
+function updateBigDisplay() {
+  let bigDisplay = document.querySelector(".live-display.big");
 
+  // if (op) {
+  //   if (b.length > 0) {
+  //     bigDisplay.textContent = `${a.join("") + op + b.join("")}`;
+  //   } else if (op && a.length > 0) {
+  //     bigDisplay.textContent = `${a.join("") + op}`;
+  //   } else if (a.length > 0 && !op) {
+  //     bigDisplay.textContent = `${a.join("")}`;
+  //   } else {
+  //     bigDisplay.textContent = 0;
+  //   }
+  // }
 
+  if (result) {
+    bigDisplay.textContent = `${result}`;
+  } else {
+    bigDisplay.textContent = `${(a.join("") ? a.join("") : '') 
+    + (op ? op : '') 
+    + (b.join("") ? b.join("") : '')}`;
+  }
+}
 
-
+function updateSmallDisplay() {
+  let smallDisplay = document.querySelector(".live-display small");
+}
 

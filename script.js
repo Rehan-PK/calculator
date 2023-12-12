@@ -34,7 +34,11 @@ function multiply(a, b) {
   return a * b;
 }
 function divide(a, b) {
-  return a / b;
+  if (b == '0') {
+    alert('Dividing by "0" :( are you serious !');
+  } else {
+    return (a / b).toFixed(3);
+  }
 }
 
 // 2. Three variables
@@ -206,17 +210,55 @@ function checkInput(key) {
     case "-":
     case "*":
     case "/":
-      op = keyValue;
-      updateBigDisplay();
+      // add below conditional here
+      // if op already selected & a & b then execute operate function else 
+      if (op) {
+        if (a.length > 0 && b.length > 0) {
+          result = operate(Number(a.join("")), op, Number(b.join("")))
+          console.log(result);
+          op = keyValue;
+          updateBigDisplay();
+          // make result equal to a
+          // set op to the current keyValue
+          // set b to 0
+          a.splice(0, a.length, result);
+          b.splice(0, b.length);
+          result = null;
+        } else if (a.length > 0 && b.length == 0) {
+          op = keyValue;
+          updateBigDisplay();
+        }
+      } else if (result) {
+        result = a;
+        op = keyValue;
+        updateBigDisplay(); 
+      } else {
+        op = keyValue;
+        updateBigDisplay();
+      }
       break;
     case "=":
-      result = operate(Number(a.join("")), op, Number(b.join("")))
-      console.log(result);
-      updateBigDisplay();
-      a.splice(0, a.length);
-      b.splice(0, b.length);
-      op = null;
-      result = null;
+      // 3 scenarios
+      // 1. if a && !op && !b: then result = a & updateDisplay
+      if (result) {
+        // do nothing
+      } else if (a && !op && !b) {
+        result = a;
+        updateBigDisplay();
+        // 2. if a && op && !b: then result = a & op & updateDisplay
+      } else if (a && op && !b) {
+        result = a;
+        updateBigDisplay();
+        // 3. if a && op && b: then same as below
+      } else {
+        result = operate(Number(a.join("")), op, Number(b.join("")))
+        a.splice(0, a.length);
+        b.splice(0, b.length);
+        console.log(result);
+        op = null;
+        updateBigDisplay();
+        // result = null;
+      }
   }
 }
 
@@ -232,51 +274,64 @@ function pushKey(keyValue) {
 }
 
 function clearIt() {
-  if (b.length > 0) {
-    b.splice(0, a.length);
-    a.splice(0, a.length);
-    op = null;
-  } else if (op) {
-    op = null;
-    a.splice(0, b.length);
-  } else if (a.length > 0) {
-    a.splice(0, a.length);
-  }
+  // if (b.length > 0) {
+  //   b.splice(0, a.length);
+  //   a.splice(0, a.length);
+  //   op = null;
+  // } else if (op) {
+  //   op = null;
+  //   a.splice(0, b.length);
+  // } else if (a.length > 0) {
+  //   a.splice(0, a.length);
+  // }
+  a.splice(0, a.length);
+  b.splice(0, b.length);
+  op = null;
+  result = null;
 }
 
 function deleteIt() {
-  if (op) {
-    if (b.length > 0) {
-      b.pop();
-    } else {
-      op = null;
-    }
-  } else if (!op && a.length > 0) {
+  // if (op) {
+  //   if (b.length > 0) {
+  //     b.pop();
+  //   } else {
+  //     op = null;
+  //   }
+  // } else if (!op && a.length > 0) {
+  //   a.pop();
+  // }
+
+  if (result) {
+    result = null;
+  } else if (b) {
+    b.pop();
+  } else if (op) {
+    op = null;
+  } else if (a) {
     a.pop();
   }
 }
 
 function updateBigDisplay() {
-  let bigDisplay = document.querySelector(".live-display.big");
-
-  // if (op) {
-  //   if (b.length > 0) {
-  //     bigDisplay.textContent = `${a.join("") + op + b.join("")}`;
-  //   } else if (op && a.length > 0) {
-  //     bigDisplay.textContent = `${a.join("") + op}`;
-  //   } else if (a.length > 0 && !op) {
-  //     bigDisplay.textContent = `${a.join("")}`;
-  //   } else {
-  //     bigDisplay.textContent = 0;
-  //   }
+  let bigDisplay = document.querySelector(".live-display.big").textContent;
+  // if (result && op) {
+  //   bigDisplay.textContent = `${result + op}`;
+  // } else if (result && !op) {
+  //   bigDisplay.textContent = `${result}`;
+  // } else {
+  //   bigDisplay.textContent = `${(a.join("") ? a.join("") : '') 
+  //   + (op ? op : '') 
+  //   + (b.join("") ? b.join("") : '')}`;
   // }
 
-  if (result) {
-    bigDisplay.textContent = `${result}`;
+  if (result && op) {
+    bigDisplay = `${result + op}`;
+  } else if (result && !op) {
+    bigDisplay = `${result}`;
   } else {
-    bigDisplay.textContent = `${(a.join("") ? a.join("") : '') 
-    + (op ? op : '') 
-    + (b.join("") ? b.join("") : '')}`;
+    bigDisplay = `${(a.join("") ? a.join("") : '') 
+      + (op ? op : '') 
+      + (b.join("") ? b.join("") : '')}`;
   }
 }
 

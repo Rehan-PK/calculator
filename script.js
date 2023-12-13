@@ -20,8 +20,7 @@ function divide(a, b) {
 let a = [], 
 b = [], 
 op, 
-result,
-decimal;
+result;
 
 // 3. creating function operate
 function operate(a, op, b) {
@@ -189,7 +188,36 @@ function updateBigDisplay() {
 
 // Users can get floating point numbers if they do the math required to get one, but they can’t type them in yet. Add a . button and let users input decimals! Make sure you don’t let them type more than one though: 12.3.56.5. It is hard to do math on these numbers. (disable the decimal button if there’s already one in the display)
 
+// check if a decimal already in the display & disable button if it is
+pushDecimal(keyValue) {
+  let bigDisplay = document.querySelector(".live-display.big");
+  let bigDisplayText = bigDisplay.innerText;
+  // here include condition that if the expression includes "." or if the expression after any of the symbols "+, -, /, *" includes the "." then disable the button to prevent further "." addition
+  if (bigDisplayText.split(op)[1].includes('.')) {
+    // disable the . button
+  } else if (!op && bigDisplayText.includes('.')) {
+    // disable the button
+  } else {
+    if (result) {
+      a.splice(0, a.length, result, keyValue);
+    } else if (a && !op && !b) {
+      a.push(keyValue);
+    } else if (a && op && !b) {
+      b.push(keyValue);
+    }
+    // else add it to the existing single number (i.e. 'result' or a - in this order exactly) / or the number after the symbol (i.e. b)
+  }
+}
 
+function disableDotKey() {
+  let dotKey = document.querySelector("#dot");
+  // https://stackoverflow.com/questions/11371550/change-hover-css-properties-with-javascript
+  // https://www.quirksmode.org/dom/changess.html
+
+  // difficult to change style, but convenient to remove the innerText of button, following this approach, alternatively i can change background color but it still will highlight on hover so better to remove innertext - however, when i changed background color it further disabled hover color change so i will change background color instead of disabling innerText
+  dotKey.style.backgroundColor = 'gray';
+  // dotKey.style = document.querySelector("#clear").style; this resets back to normal button with hover effects. setting background disabled hover
+}
 
 // Add keyboard support! You might run into an issue where keys such as (/) might cause you some trouble. Read the MDN documentation for event.preventDefault to help solve this problem.
 

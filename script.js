@@ -62,8 +62,8 @@ for (let i = 0; i < buttons.length; i++) {
 }
 
 // converting above to switch statement
-function checkInput(key) {
-  let keyValue = buttons[key].innerHTML.trim();
+function checkInput(i) {
+  let keyValue = buttons[i].innerHTML.trim();
   switch(keyValue) {
     case "1":
     case "2":
@@ -189,14 +189,16 @@ function updateBigDisplay() {
 // Users can get floating point numbers if they do the math required to get one, but they can’t type them in yet. Add a . button and let users input decimals! Make sure you don’t let them type more than one though: 12.3.56.5. It is hard to do math on these numbers. (disable the decimal button if there’s already one in the display)
 
 // check if a decimal already in the display & disable button if it is
-pushDecimal(keyValue) {
+function pushDecimal(keyValue) {
   let bigDisplay = document.querySelector(".live-display.big");
   let bigDisplayText = bigDisplay.innerText;
   // here include condition that if the expression includes "." or if the expression after any of the symbols "+, -, /, *" includes the "." then disable the button to prevent further "." addition
   if (bigDisplayText.split(op)[1].includes('.')) {
     // disable the . button
+    disableDotKey();
   } else if (!op && bigDisplayText.includes('.')) {
-    // disable the button
+    // disable the . button
+    disableDotKey();
   } else {
     if (result) {
       a.splice(0, a.length, result, keyValue);
@@ -206,6 +208,10 @@ pushDecimal(keyValue) {
       b.push(keyValue);
     }
     // else add it to the existing single number (i.e. 'result' or a - in this order exactly) / or the number after the symbol (i.e. b)
+
+    // enableDotKey after the following:
+    // 1. after any symbol is pressed + - / *
+    // 2. after equal is pressed =
   }
 }
 
@@ -216,8 +222,18 @@ function disableDotKey() {
 
   // difficult to change style, but convenient to remove the innerText of button, following this approach, alternatively i can change background color but it still will highlight on hover so better to remove innertext - however, when i changed background color it further disabled hover color change so i will change background color instead of disabling innerText
   dotKey.style.backgroundColor = 'gray';
+  dotKey.addEventListener("click", () => checkInput(i))
   // dotKey.style = document.querySelector("#clear").style; this resets back to normal button with hover effects. setting background disabled hover
 }
 
+function enableDotKey() {
+  let dotKey = document.querySelector("#dot");
+  dotKey.style = document.querySelector("#clear").style;
+}
+
 // Add keyboard support! You might run into an issue where keys such as (/) might cause you some trouble. Read the MDN documentation for event.preventDefault to help solve this problem.
+
+let dotKey = document.querySelector("#equal");
+dotKey.removeEventListener("click", () => checkInput(16));
+
 

@@ -189,7 +189,7 @@ function updateBigDisplay() {
 // Users can get floating point numbers if they do the math required to get one, but they can’t type them in yet. Add a . button and let users input decimals! Make sure you don’t let them type more than one though: 12.3.56.5. It is hard to do math on these numbers. (disable the decimal button if there’s already one in the display)
 
 // check if a decimal already in the display & disable button if it is
-pushDecimal(keyValue) {
+function pushDecimal(keyValue) {
   let bigDisplay = document.querySelector(".live-display.big");
   let bigDisplayText = bigDisplay.innerText;
   // here include condition that if the expression includes "." or if the expression after any of the symbols "+, -, /, *" includes the "." then disable the button to prevent further "." addition

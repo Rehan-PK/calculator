@@ -22,6 +22,8 @@ b = [],
 op, 
 result;
 
+let dotKey = document.querySelector("#dot");
+
 // 3. creating function operate
 function operate(a, op, b) {
   if (op == '+') {
@@ -58,12 +60,12 @@ function operate(a, op, b) {
 let buttons = document.querySelectorAll(".key");
 // add click eventlistener for all keys, check for input of numbers/operators
 for (let i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener("click", () => checkInput(i));
+  buttons[i].addEventListener("click", checkInput);
 }
 
 // converting above to switch statement
-function checkInput(i) {
-  let keyValue = buttons[i].innerHTML.trim();
+function checkInput() {
+  let keyValue = this.innerHTML.trim();
   switch(keyValue) {
     case "1":
     case "2":
@@ -91,23 +93,26 @@ function checkInput(i) {
     case "-":
     case "*":
     case "/":
+      enableDotKey();
       pushOperator(keyValue);
       break;
     case "=":
       // 3 scenarios
       // 1. if a && !op && !b: then result = a & updateDisplay
+      enableDotKey();
       if (result) {
         // do nothing
         updateBigDisplay();
-      } else if (a && !op && !b) {
-        result = a;
+      } else if (a.length > 0 && !op && !b.length > 0) {
+        result = a.join("");
         updateBigDisplay();
         // 2. if a && op && !b: then result = a & op & updateDisplay
-      } else if (a && op && !b) {
-        result = a;
+      } else if (a.length > 0 && op && !b.length > 0) {
+        result = a.join("");
+        op = null;
         updateBigDisplay();
         // 3. if a && op && b: then same as below
-      } else if (!a && !op && !b) {
+      } else if (!a.length > 0 && !op && !b.length > 0) {
         updateBigDisplay();
       } else {
         result = operate(Number(a.join("")), op, Number(b.join("")))
@@ -118,6 +123,12 @@ function checkInput(i) {
         updateBigDisplay();
         // result = null;
       }
+    case ".":
+      // 1. use pushNumber here, just add in pushNumber & disable this key
+      pushNumber(keyValue);
+      // 2. if already dot in number then don't add dot
+      // 3. after operator key enable dotKey
+      // 4. after equal key enable dotKey
   }
 }
 
@@ -127,10 +138,26 @@ function pushNumber(keyValue) {
   if (result && checkForInt) {
     clearIt();
     a.push(keyValue);
-  } else if (a && op && checkForInt) {
+  } else if (a.length > 0 && op && checkForInt) {
     b.push(keyValue);
   } else if (!op && checkForInt) {
     a.push(keyValue);
+  }
+
+  // below for dotKey only
+  if (result && keyValue == '.') {
+    disableDotKey();
+    clearIt();
+    a.push(keyValue);
+    updateBigDisplay();
+  } else if (keyValue == '.' && !result && !op && !a.includes('.')) {
+    disableDotKey();
+    a.push(keyValue);
+    updateBigDisplay();
+  } else if (keyValue == '.' && !result && op && !b.includes('.')) {
+    disableDotKey();
+    b.push(keyValue);
+    updateBigDisplay();
   }
 }
 
@@ -191,6 +218,8 @@ function updateBigDisplay() {
 // check if a decimal already in the display & disable button if it is
 function pushDecimal(keyValue) {
   let bigDisplay = document.querySelector(".live-display.big");
+  // disable dotKey to prevent further input
+
   let bigDisplayText = bigDisplay.innerText;
   // here include condition that if the expression includes "." or if the expression after any of the symbols "+, -, /, *" includes the "." then disable the button to prevent further "." addition
   if (bigDisplayText.split(op)[1].includes('.')) {
@@ -216,24 +245,24 @@ function pushDecimal(keyValue) {
 }
 
 function disableDotKey() {
-  let dotKey = document.querySelector("#dot");
   // https://stackoverflow.com/questions/11371550/change-hover-css-properties-with-javascript
   // https://www.quirksmode.org/dom/changess.html
 
   // difficult to change style, but convenient to remove the innerText of button, following this approach, alternatively i can change background color but it still will highlight on hover so better to remove innertext - however, when i changed background color it further disabled hover color change so i will change background color instead of disabling innerText
   dotKey.style.backgroundColor = 'gray';
-  dotKey.addEventListener("click", () => checkInput(i))
+  dotKey.removeEventListener("click", checkInput);
   // dotKey.style = document.querySelector("#clear").style; this resets back to normal button with hover effects. setting background disabled hover
 }
 
+
 function enableDotKey() {
-  let dotKey = document.querySelector("#dot");
   dotKey.style = document.querySelector("#clear").style;
+  dotKey.addEventListener('click', checkInput);
 }
 
 // Add keyboard support! You might run into an issue where keys such as (/) might cause you some trouble. Read the MDN documentation for event.preventDefault to help solve this problem.
 
-let dotKey = document.querySelector("#equal");
-dotKey.removeEventListener("click", () => checkInput(16));
+// let dotKey = document.querySelector("#equal");
+// dotKey.removeEventListener("click", () => checkInput(16));
 
 

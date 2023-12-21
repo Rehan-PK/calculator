@@ -63,9 +63,18 @@ for (let i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener("click", checkInput);
 }
 
+window.addEventListener('keydown', checkInput);
+
 // converting above to switch statement
-function checkInput() {
-  let keyValue = this.innerHTML.trim();
+function checkInput(e) {
+  let keyValue;
+  
+  if (!this.innerHTML) {
+    keyValue = e.key;
+  } else {
+    keyValue = this.innerHTML.trim();
+  };
+
   switch(keyValue) {
     case "1":
     case "2":
@@ -101,14 +110,13 @@ function checkInput() {
       // 1. if a && !op && !b: then result = a & updateDisplay
       enableDotKey();
       if (result) {
-        // do nothing
         updateBigDisplay();
+        a = result.toString().split('');
+        result = null;
       } else if (a.length > 0 && !op && !b.length > 0) {
-        result = a.join("");
         updateBigDisplay();
         // 2. if a && op && !b: then result = a & op & updateDisplay
       } else if (a.length > 0 && op && !b.length > 0) {
-        result = a.join("");
         op = null;
         updateBigDisplay();
         // 3. if a && op && b: then same as below
@@ -118,10 +126,8 @@ function checkInput() {
         result = operate(Number(a.join("")), op, Number(b.join("")))
         a.splice(0, a.length);
         b.splice(0, b.length);
-        console.log(result);
         op = null;
         updateBigDisplay();
-        // result = null;
       }
     case ".":
       // 1. use pushNumber here, just add in pushNumber & disable this key
@@ -190,7 +196,9 @@ function clearIt() {
 
 function deleteIt() {
   if (result) {
+    a = result.toString().split('');
     result = null;
+    a.pop();
   } else if (b.length > 0) {
     b.pop();
   } else if (op) {
@@ -247,22 +255,12 @@ function pushDecimal(keyValue) {
 function disableDotKey() {
   // https://stackoverflow.com/questions/11371550/change-hover-css-properties-with-javascript
   // https://www.quirksmode.org/dom/changess.html
-
-  // difficult to change style, but convenient to remove the innerText of button, following this approach, alternatively i can change background color but it still will highlight on hover so better to remove innertext - however, when i changed background color it further disabled hover color change so i will change background color instead of disabling innerText
   dotKey.style.backgroundColor = 'gray';
   dotKey.removeEventListener("click", checkInput);
   // dotKey.style = document.querySelector("#clear").style; this resets back to normal button with hover effects. setting background disabled hover
 }
 
-
 function enableDotKey() {
   dotKey.style = document.querySelector("#clear").style;
   dotKey.addEventListener('click', checkInput);
 }
-
-// Add keyboard support! You might run into an issue where keys such as (/) might cause you some trouble. Read the MDN documentation for event.preventDefault to help solve this problem.
-
-// let dotKey = document.querySelector("#equal");
-// dotKey.removeEventListener("click", () => checkInput(16));
-
-

@@ -18,7 +18,7 @@
 .outline {
   margin: auto;
   border: 2px solid goldenrod;
-  height: 500px;
+  height: 550px;
   width: 360px;
   border-radius: 10px;
   padding: 20px;
@@ -31,7 +31,7 @@
 
 .display {
   border: 2px solid goldenrod;
-  height: 90px;
+  height: 140px;
   padding: 8px;
   border-radius: 5px;
   background-color: white;
@@ -48,15 +48,10 @@
   /* width: 100%; */
 }
 
-.live-display.small {
-  height: 25%;
-  margin-bottom: auto;
-}
-
 .live-display.big {
-  height: 95%;
-  font-size: 56px;
-  padding-top: 8px;
+  font-size: 46px;
+  overflow: auto;
+  word-break: break-all;
 }
 
 /* overall dimension for big container key boxes */
